@@ -69,6 +69,7 @@ from genshi.template.interpolation import PREFIX
 
 from aeroolib.plugins.base import AerooStream
 from aeroolib.reporting import Report, MIMETemplateLoader
+import base64
 
 GENSHI_EXPR = re.compile(r'''
         (/)?                                 # is this a closing tag?
@@ -819,7 +820,8 @@ class TContent(object):
 class OOSerializer:
 
     def __init__(self, oo_template, oo_styles=None):
-        self.template = oo_template
+        #self.template = oo_template
+        self.template = StringIO(base64.decodestring(oo_template.getvalue()))
         self.inzip = zipfile.ZipFile(self.template)
         self.manifest = Manifest(self.inzip.read(MANIFEST))
         self.meta = Meta(self.inzip.read(META))
